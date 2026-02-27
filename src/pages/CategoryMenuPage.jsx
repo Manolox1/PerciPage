@@ -5,10 +5,12 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
 import { useMenuData } from '../hooks/useMenuData';
 import { Button } from '@/components/ui/button';
+import useCart from '../contexts/UseCart';
 
 const CategoryMenuPage = () => {
   const { categoryName } = useParams();
   const { formattedData: menuData, loading, error, refetch } = useMenuData();
+  const { addToCart } = useCart();
 
   if (loading) {
     return (
@@ -112,9 +114,22 @@ const CategoryMenuPage = () => {
                       {item.price}
                     </span>
                   </div>
-                  <p className="text-sm text-[rgb(47,46,46)] line-clamp-2 mt-auto">
+                  <p className="text-sm text-[rgb(47,46,46)] line-clamp-2 mb-4">
                     {item.description}
                   </p>
+
+                  <Button
+                    onClick={() =>
+                      addToCart({
+                        id: item.id,
+                        name: item.name,
+                        price: Number(item.price.replace("$", "")),
+                      })
+                    }
+                    className="mt-auto bg-[rgb(22,148,137)] hover:bg-[rgb(18,118,109)] text-white"
+                  >
+                    Agregar al carrito
+                  </Button>
                 </div>
               </motion.div>
             ))}

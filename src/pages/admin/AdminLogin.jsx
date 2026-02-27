@@ -8,6 +8,8 @@ import { Button } from '@/components/ui/button';
 const AdminLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const { login } = useAdminAuth();
     const navigate = useNavigate();
     const { toast } = useToast();
@@ -24,21 +26,26 @@ const AdminLogin = () => {
             return;
         }
 
-        const result = await login(email, password);
+        setLoading(true);
 
-        if (result.success) {
-            toast({
-                title: 'Éxito',
-                description: 'Inicio de sesión exitoso.',
-            });
-            navigate('/admin/dashboard');
-        } else {
+        const error = await login(email, password);
+
+        if (error) {
             toast({
                 title: 'Error',
-                description: result.error || 'Credenciales inválidas.',
+                description: error.message || 'Credenciales inválidas.',
                 variant: 'destructive',
             });
+            setLoading(false);
+            return;
         }
+
+        toast({
+            title: 'Éxito',
+            description: 'Inicio de sesión exitoso.',
+        });
+
+        navigate('/admin/dashboard');
     };
 
     return (
@@ -83,9 +90,10 @@ const AdminLogin = () => {
 
                     <Button
                         type="submit"
+                        disabled={loading}
                         className="w-full bg-[rgb(22,148,137)] hover:bg-[rgb(18,118,109)] text-white py-2 px-4 rounded-md"
                     >
-                        Iniciar Sesión
+                        {loading ? "Ingresando..." : "Iniciar Sesión"}
                     </Button>
                 </form>
             </div>

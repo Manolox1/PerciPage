@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingCart } from 'lucide-react';
+import useCart from '../contexts/UseCart';
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { totalItems } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -63,6 +66,15 @@ const Header = () => {
                 )}
               </Link>
             ))}
+            <Link to="/cart" className="relative">
+              <ShoppingCart className="w-6 h-6 text-gray-900 hover:text-[rgb(22,148,137)] transition-colors" />
+
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-[rgb(22,148,137)] text-white text-xs px-2 py-0.5 rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}

@@ -11,7 +11,9 @@ import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminDishes from './pages/admin/AdminDishes';
 import AdminCategories from './pages/admin/AdminCategories';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import { AdminAuthProvider } from './contexts/AdminAuthProvider';
+import Cart from './pages/Cart';
 
 function App() {
   return (
@@ -27,12 +29,13 @@ function App() {
               <Route path="/menu/:categoryName" element={<CategoryMenuPage />} />
               <Route path="/takeaway" element={<TakeAway />} />
               <Route path="/events" element={<Events />} />
+              <Route path="/cart" element={<Cart />} /> 
 
               {/* Admin Routes */}
               <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
-              <Route path="/admin/categories" element={<AdminDishes />} />
-              <Route path="/admin/dishes" element={<AdminCategories />} />
+              <Route path="/admin/dashboard" element={<ProtectedAdminRoute><AdminDashboard /></ProtectedAdminRoute  >} />
+              <Route path="/admin/categories" element={<ProtectedAdminRoute><AdminDishes /></ProtectedAdminRoute>} />
+              <Route path="/admin/dishes" element={<ProtectedAdminRoute><AdminCategories /></ProtectedAdminRoute>} />
             </Routes>
           </main>
           <Footer />
